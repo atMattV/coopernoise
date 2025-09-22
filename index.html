@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Coopernoise</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="ui">
+    <h1>Perlin Music Video Generator</h1>
+
+    <section>
+      <h2>Project</h2>
+      <div class="row">
+        <label>Seed</label>
+        <input id="seed" type="text" value="123456" />
+        <button id="randomize">🎲</button>
+
+        <label>Length (s)</label>
+        <input id="duration" type="number" value="60" min="3" max="3600" />
+        <label>Use Track Length</label>
+        <input id="useTrackLen" type="checkbox" />
+      </div>
+
+      <div class="row">
+        <label>In (s)</label><input id="inOffset" type="number" value="0" min="0" />
+        <label>Out (s)</label><input id="outOffset" type="number" value="0" min="0" />
+        <label>Resolution</label>
+        <select id="resolution">
+          <option value="1280x720">1280×720</option>
+          <option value="1920x1080" selected>1920×1080</option>
+          <option value="2560x1440">2560×1440</option>
+          <option value="3840x2160">3840×2160</option>
+        </select>
+        <label>FPS</label><input id="fps" type="number" value="60" min="24" max="120" />
+      </div>
+    </section>
+
+    <section>
+      <h2>Audio</h2>
+      <div class="row">
+        <label>Source</label>
+        <select id="audioSource">
+          <option value="uploaded" selected>Uploaded Track</option>
+          <option value="procedural">Procedural (Tone)</option>
+        </select>
+
+        <label id="bpmLbl">BPM (for procedural)</label>
+        <input id="bpm" type="number" value="112" min="60" max="200" />
+        <label>Scale</label>
+        <select id="scale">
+          <option value="minor" selected>Minor</option>
+          <option value="major">Major</option>
+          <option value="dorian">Dorian</option>
+          <option value="phrygian">Phrygian</option>
+        </select>
+        <label>Root</label>
+        <select id="root">
+          <option>C2</option><option>C#2</option><option>D2</option><option>D#2</option>
+          <option>E2</option><option>F2</option><option>F#2</option><option>G2</option>
+          <option>G#2</option><option>A2</option><option>A#2</option><option>B2</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label>Upload Track</label>
+        <input id="audioFile" type="file" accept=".wav,.mp3,.ogg,.m4a,.aac,.flac,.webm,.mp4,audio/*" />
+        <button id="clearAudio">✖</button>
+        <span id="audioInfo" class="muted">no track</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Style Prompt</h2>
+      <div class="row">
+        <textarea id="prompt" placeholder="e.g., neon glassy organic wireframe purple kaleidoscope slow camera low displacement"></textarea>
+        <button id="applyPrompt">Apply</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Visual Assets</h2>
+      <div class="row">
+        <label>Shape</label>
+        <select id="shape">
+          <option value="cycle" selected>Auto-cycle</option>
+          <option value="sphere">Sphere</option>
+          <option value="icosa">Icosa</option>
+          <option value="torus">Torus Knot</option>
+          <option value="plane">Plane</option>
+          <option value="box">Box</option>
+        </select>
+        <label>Texture (albedo/video)</label>
+        <input id="mapFile" type="file" accept="image/*,video/*" />
+        <label>Displacement map</label>
+        <input id="dispFile" type="file" accept="image/*" />
+      </div>
+      <div id="dropZone">Drop images/videos here</div>
+    </section>
+
+    <section>
+      <h2>Run / Export</h2>
+      <div class="row buttons">
+        <button id="start">▶ Start</button>
+        <button id="stop" disabled>⏹ Stop</button>
+        <button id="record" disabled>● Record</button>
+        <button id="stopRecord" disabled>⏺ Stop Rec</button>
+        <button id="renderTake" disabled>⚡ Render Take</button>
+      </div>
+
+      <div class="row">
+        <label>Container</label>
+        <select id="container">
+          <option value="auto" selected>Auto (best available)</option>
+          <option value="webm">WebM</option>
+          <option value="mp4">MP4 (try native / else convert)</option>
+          <option value="mov">MOV (convert)</option>
+        </select>
+        <button id="convertLast" disabled>↻ Convert Last Recording</button>
+        <span class="muted" id="exportNote"></span>
+      </div>
+
+      <div class="row small">
+        <span id="status">idle</span>
+      </div>
+    </section>
+  </div>
+
+  <div id="canvasWrap"></div>
+
+  <!-- Tone.js (UMD global: Tone) -->
+  <script src="https://unpkg.com/tone@14.8.49/build/Tone.js"></script>
+  <!-- Three.js module is imported inside visuals.js -->
+  <!-- App (ES modules) -->
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
